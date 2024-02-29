@@ -21,11 +21,13 @@ var schema = buildSchema(`
 
   type Query {
     getCategory(id: ID!): Category
+    listCategories: [Category!]
   }
 
   type Mutation {
-    createCategory(input: CategoryInput): Category,
     updateCategory(id: ID!, input: CategoryInput): Category
+    createCategory(input: CategoryInput): Category
+    deleteCategoy(id: ID!): String
   }
 `)
 
@@ -49,9 +51,13 @@ type PropsUpdateCategory = {
   }
 }
 
+
+type PropsDeleteCategory = {
+  id: string
+}
+
 var root = {
   getCategory: ({id}: PropsGetCategory): Category => {
-    console.log('entrou aqui ')
     const category = categoryDatabase.find((category: Category) => (category.id === id))
     if(!category) {
       throw new Error(`No category exist with id ${id}`)
@@ -60,7 +66,7 @@ var root = {
     return category
   },
 
-  createCategory: ({input}: PropsCreateCategory) => {
+  createCategory: ({input}: PropsCreateCategory): Category => {
     const id = require("crypto").randomBytes(10).toString("hex")
     const category = new Category({
       id,
@@ -71,10 +77,28 @@ var root = {
     return category;
   },
 
-  updateCategory: ({ id, input }: PropsUpdateCategory) => {
-    console.log(id);
-  }
+  updateCategory: ({ id, input }: PropsUpdateCategory): Category => {
+    const category = categoryDatabase.find((category: Category) => (category.id === id))
+    if(!category) {
+      throw new Error(`No category exist with id ${id}`)
+    }
+    
+    const categoryUpdate = Object.assign(category, input)
+    return categoryUpdate
+  },
 
+  listCategories: (): Category[] => {
+    return categoryDatabase
+  },
+
+  deleteCategoy: ({id}: PropsDeleteCategory) => {
+    const index = categoryDatabase.findIndex((category: Category) => category.id === id);
+    if (index === -1) {
+        throw new Error(`No category exists with id ${id}`);
+    }
+    categoryDatabase.splice(index, 1);
+    return `Category with id ${id} deleted successfully.`;
+  }
 }
 
 const app = express();
