@@ -10,3 +10,12 @@ This is a study qraphql project
 - Node
 - Express
 - Graphql
+
+## ⭐ Runing project
+
+Install my-project with npm
+
+```bash
+  yarn install
+  yarn dev
+```
