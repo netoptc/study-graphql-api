@@ -17,6 +17,7 @@ const courseSchema = buildSchema(`
   type Query {
     getCourse(id: ID!): Course
     listCourses: [Course!]
+    listCoursesByCategory(categoryId: ID!): [Course!]
   }
 
   type Mutation {

@@ -26,6 +26,10 @@ type PropsUpdateCourse = {
 }
 
 
+type PropsListCoursesByCategory = {
+  categoryId: string
+}
+
 type PropsDeleteCourse = {
   id: string
 }
@@ -69,6 +73,16 @@ const courseResolvers = {
 
   listCourses: (): Category[] => {
     return courseDatabase
+  },
+
+  listCoursesByCategory: ({categoryId}: PropsListCoursesByCategory): Course[] => {
+    const index = categoryDatabase.findIndex((category: Category) => category.id === categoryId);
+    if (index === -1) {
+        throw new Error(`No category exists with id ${categoryId}`);
+    }
+    const courses = courseDatabase.filter((course: Course) => course.categoryId === categoryId);
+
+    return courses
   },
 
   deleteCourse: ({id}: PropsDeleteCourse) => {
