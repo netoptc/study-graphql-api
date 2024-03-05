@@ -1,8 +1,10 @@
 import express from "express";
-import categoryRoutes from './graphQl/routes/categoryRoutes';
+import categoriesRoutes from './graphQl/routes/categoriesRoutes';
+import coursesRoutes from './graphQl/routes/coursesRoutes';
 
 const app = express();
 
-app.use(categoryRoutes);
+app.use(coursesRoutes);
+app.use(categoriesRoutes);
 
 export { app };

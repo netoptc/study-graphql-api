@@ -1,4 +1,3 @@
-// categorySchema.js
 import { buildSchema } from 'graphql';
 
 const categorySchema = buildSchema(`

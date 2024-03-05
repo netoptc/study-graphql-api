@@ -1,7 +1,6 @@
-// categoryResolvers.js
 import Category from '../../models/Category';
 
-const categoryDatabase: Category[] = [];
+export const categoryDatabase: Category[] = [];
 
 type PropsGetCategory = {
   id: string
